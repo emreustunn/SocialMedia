@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/api-gateway-service/Java6SocialMedia.api-gateway-service.main.iml" filepath="$PROJECT_DIR$/.idea/modules/api-gateway-service/Java6SocialMedia.api-gateway-service.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/auth-service/Java6SocialMedia.auth-service.main.iml" filepath="$PROJECT_DIR$/.idea/modules/auth-service/Java6SocialMedia.auth-service.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/config-server-git/Java6SocialMedia.config-server-git.main.iml" filepath="$PROJECT_DIR$/.idea/modules/config-server-git/Java6SocialMedia.config-server-git.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/config-server/Java6SocialMedia.config-server.main.iml" filepath="$PROJECT_DIR$/.idea/modules/config-server/Java6SocialMedia.config-server.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/elastic-service/Java6SocialMedia.elastic-service.main.iml" filepath="$PROJECT_DIR$/.idea/modules/elastic-service/Java6SocialMedia.elastic-service.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/mail-service/Java6SocialMedia.mail-service.main.iml" filepath="$PROJECT_DIR$/.idea/modules/mail-service/Java6SocialMedia.mail-service.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/user-service/Java6SocialMedia.user-service.main.iml" filepath="$PROJECT_DIR$/.idea/modules/user-service/Java6SocialMedia.user-service.main.iml" />
+    </modules>
+  </component>
+</project>
