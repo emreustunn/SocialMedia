@@ -49,7 +49,7 @@ public class AuthController {
     public ResponseEntity<Boolean> activationCheck(ActivitaionRequestDto dto) {
         return ResponseEntity.ok(authService.activationCheck(dto));
     }
-    @PreAuthorize("hasAnyAuthority('USER')")
+    @PreAuthorize("hasAuthority('USER')")
     @GetMapping(FINDALL)
     public ResponseEntity<List<Auth>> findAll() {
         return ResponseEntity.ok(authService.findAll());
@@ -69,7 +69,7 @@ public class AuthController {
     public ResponseEntity<Long> getIdFromToken(String token) {
         return ResponseEntity.ok(jwtTokenManager.getIdFromToken(token).get());
     }
-    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/getrolefromtoken")
     public ResponseEntity<String> getRoleFromToken(String token) {
         return ResponseEntity.ok(jwtTokenManager.getRoleFromToken(token).get());

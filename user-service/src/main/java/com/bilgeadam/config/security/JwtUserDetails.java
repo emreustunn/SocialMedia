@@ -1,7 +1,7 @@
 package com.bilgeadam.config.security;
 
-import com.bilgeadam.repository.entity.Auth;
-import com.bilgeadam.service.AuthService;
+import com.bilgeadam.repository.entity.UserProfile;
+import com.bilgeadam.service.UserProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -17,35 +17,23 @@ import java.util.Optional;
 
 @Service
 public class JwtUserDetails implements UserDetailsService {
-    @Autowired
-    private AuthService authService;
-
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return null;
     }
 
 
-    public UserDetails loadUserByUserId(Long id) throws UsernameNotFoundException {
-        Optional<Auth> auth=authService.findById(id);
+    public UserDetails loadUserByUserRole(String role) throws UsernameNotFoundException {
 
-        if (auth.isPresent()){
+        List<GrantedAuthority> authorityList = new ArrayList<>();
+        authorityList.add(new SimpleGrantedAuthority(role));
 
-            List<GrantedAuthority> authorityList=new ArrayList<>();
-            authorityList.add(new SimpleGrantedAuthority(auth.get().getRole().toString()));
-
-            return User.builder()
-                    .username(auth.get().getUsername())
-                    .password("")
-                    .accountExpired(false)
-                    .accountLocked(false)
-                    .authorities(authorityList)
-                    .build();
-        }
-
-
-
-        return null;
+        return User.builder()
+                .username(role)
+                .password("")
+                .accountLocked(false)
+                .accountExpired(false)
+                .authorities(authorityList)
+                .build();
     }
-
 }

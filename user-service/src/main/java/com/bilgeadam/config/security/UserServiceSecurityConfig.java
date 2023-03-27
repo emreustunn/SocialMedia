@@ -9,21 +9,22 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-public class AuthServiceSecurityConfig {
+public class UserServiceSecurityConfig {
 
     @Bean
     JwtTokenFilter getJwtTokenFilter(){
         return new JwtTokenFilter();
     }
 
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception{
-
         httpSecurity.csrf().disable();
-        httpSecurity.authorizeRequests().antMatchers("/v3/api-docs/**","/swagger-ui/**","/api/v1/auth/login","/api/v1/auth/register","/api/v1/auth/register2","/api/v1/auth/activatestatus").permitAll().anyRequest().authenticated();
-        //   httpSecurity.formLogin();
 
-        httpSecurity.addFilterBefore(getJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
+        httpSecurity.authorizeRequests().antMatchers("/swagger-ui/**","/v3/api-docs/**")
+                .permitAll().anyRequest().authenticated();
+
+        httpSecurity.addFilterBefore(getJwtTokenFilter(),UsernamePasswordAuthenticationFilter.class);
         return httpSecurity.build();
     }
 

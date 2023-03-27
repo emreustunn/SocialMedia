@@ -50,7 +50,7 @@ public class UserProfileService extends ServiceManager<UserProfile, String> {
 
     public Boolean createUserWithRabbitMq(RegisterModel model) {
         try {
-           UserProfile userProfile =  save(IUserMapper.INSTANCE.toUserProfile(model));
+            UserProfile userProfile = save(IUserMapper.INSTANCE.toUserProfile(model));
             registerProducer.sendNewUser(IUserMapper.INSTANCE.toRegisterElasticModel(userProfile));
             return true;
         } catch (Exception exception) {
@@ -59,8 +59,14 @@ public class UserProfileService extends ServiceManager<UserProfile, String> {
     }
 
 
-    public Boolean activateStatus(Long authid) {
-        Optional<UserProfile> userProfile = iUserProfileRepository.findOptionalByAuthId(authid);
+    //    public Boolean activateStatus(Long authid) {
+//        Optional<UserProfile> userProfile = iUserProfileRepository.findOptionalByAuthId(authid);
+    public Boolean activateStatus(String token) {
+        Optional<Long> authId = jwtTokenManager.getIdFromToken(token);
+        if (authId.isEmpty()) {
+            throw new UserManagerException(ErrorType.INVALID_TOKEN);
+        }
+        Optional<UserProfile> userProfile = iUserProfileRepository.findOptionalByAuthId(authId.get());
         if (userProfile.isEmpty()) {
             throw new UserManagerException(ErrorType.USER_NOT_FOUND);
         }

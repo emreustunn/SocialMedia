@@ -98,7 +98,9 @@ public class AuthService extends ServiceManager<Auth, Long> {
         if (dto.getActivationCode().equals(auth.get().getActivationCode())) {
             auth.get().setStatus(EStatus.ACTIVE);
             update(auth.get());
-            iUserManager.activateStatus(auth.get().getId());
+//            iUserManager.activateStatus(auth.get().getId());
+            String token=jwtTokenManager.createToken(auth.get().getId(),auth.get().getRole()).get();
+            iUserManager.activateStatus("Bearer "+token);
             return true;
         } else throw new AuthManagerException(ErrorType.ACTIVATE_CODE_ERROR);
     }
