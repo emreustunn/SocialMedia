@@ -10,15 +10,15 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @Component
 public class ErrorMessage {
-    private int code;
-    private String message;
-    private List<String> fields;
 
+    private int code;
+    private  String message;
+    private List<String> fields;
     @Builder.Default
-    private LocalDateTime date= LocalDateTime.now();
+    private LocalDateTime date=LocalDateTime.now();
 }

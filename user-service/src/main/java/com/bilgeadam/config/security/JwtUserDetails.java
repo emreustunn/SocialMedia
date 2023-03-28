@@ -1,8 +1,5 @@
 package com.bilgeadam.config.security;
 
-import com.bilgeadam.repository.entity.UserProfile;
-import com.bilgeadam.service.UserProfileService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -13,7 +10,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class JwtUserDetails implements UserDetailsService {
@@ -25,7 +21,7 @@ public class JwtUserDetails implements UserDetailsService {
 
     public UserDetails loadUserByUserRole(String role) throws UsernameNotFoundException {
 
-        List<GrantedAuthority> authorityList = new ArrayList<>();
+        List<GrantedAuthority> authorityList=new ArrayList<>();
         authorityList.add(new SimpleGrantedAuthority(role));
 
         return User.builder()

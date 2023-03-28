@@ -1,16 +1,18 @@
 package com.bilgeadam.rabbitmq.model;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
 import java.io.Serializable;
 
 @Data
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class RegisterModel implements Serializable {
+
     private Long authId;
     private String username;
     private String email;

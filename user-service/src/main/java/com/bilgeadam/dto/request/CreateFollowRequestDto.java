@@ -9,9 +9,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class LoginRequestDto {
+public class CreateFollowRequestDto {
 
-    private String username;
-    private String password;
-
+    private String token;
+    private String followId;
 }

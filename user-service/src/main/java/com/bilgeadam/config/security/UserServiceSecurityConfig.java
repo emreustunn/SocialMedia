@@ -20,13 +20,20 @@ public class UserServiceSecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception{
         httpSecurity.csrf().disable();
-
+    try {
         httpSecurity.authorizeRequests().antMatchers("/swagger-ui/**","/v3/api-docs/**")
                 .permitAll().anyRequest().authenticated();
 
         httpSecurity.addFilterBefore(getJwtTokenFilter(),UsernamePasswordAuthenticationFilter.class);
         return httpSecurity.build();
+    }catch (Exception e){
+        e.printStackTrace();
+        throw new  RuntimeException();
+
     }
+
+    }
+
 
 
 }

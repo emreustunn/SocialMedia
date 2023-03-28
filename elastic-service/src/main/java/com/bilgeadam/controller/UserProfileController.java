@@ -21,7 +21,6 @@ public class UserProfileController {
 
     @GetMapping(FINDALL)
     public ResponseEntity<Iterable<UserProfile>> findAll(){
-        return ResponseEntity.ok(userProfileService.findAll());
+        return  ResponseEntity.ok(userProfileService.findAll());
     }
-
 }

@@ -1,7 +1,7 @@
 package com.bilgeadam.repository.entity;
 
-import com.bilgeadam.repository.entity.enums.ERoles;
-import com.bilgeadam.repository.entity.enums.EStatus;
+import com.bilgeadam.repository.enums.ERole;
+import com.bilgeadam.repository.enums.EStatus;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
@@ -14,6 +14,7 @@ import javax.persistence.*;
 @ToString
 @Entity
 public class Auth extends BaseEntity{
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -24,8 +25,9 @@ public class Auth extends BaseEntity{
     private String activationCode;
     @Enumerated(EnumType.STRING)
     @Builder.Default
-    private ERoles role=ERoles.USER;
+    private ERole role=ERole.USER;
     @Enumerated(EnumType.STRING)
     @Builder.Default
     private EStatus status=EStatus.PENDING;
+
 }

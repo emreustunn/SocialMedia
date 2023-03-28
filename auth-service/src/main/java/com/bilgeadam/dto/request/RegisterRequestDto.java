@@ -7,22 +7,20 @@ import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Data
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class RegisterRequestDto {
-    @NotBlank(message = "Username boş geçilemez")
-    @Size(min = 3,max = 20,message = "username en az 3 en fazla 20 karakter olmalıdır.")
+    @NotBlank(message = "Kullanıcı adı boş geçilemez")
+
+    @Size(min = 3,max=20,message = "Kullanıcı adı en az 3 karakter en fazla 20 karakter olmalıdır")
     private String username;
     @Email
     private String email;
-    @Size(min = 3,max = 32,message = "şifre en az 3 en fazla 32 karakter olmalıdır.")
     @NotBlank
+    @Size(min =5,max=32,message = "Şifre  en az 5 karakter en fazla 32 karakter olmalıdır")
     private String password;
-
-
 }

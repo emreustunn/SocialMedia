@@ -14,24 +14,24 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 import java.util.ArrayList;
 import java.util.List;
 
+//@ControllerAdvice
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
 
     @ExceptionHandler(RuntimeException.class)
-    public ResponseEntity<String> handleRuntimeException(RuntimeException ex) {
-        return ResponseEntity.ok("Beklenmeyen bir hata olustu: " + ex.getMessage());
+    public ResponseEntity<String> handleRuntimeException(RuntimeException ex){
+        return ResponseEntity.ok("Beklenmeyen bir hata olustu: "+ex.getMessage());
     }
-
     @ExceptionHandler(UserManagerException.class)
-    public ResponseEntity<ErrorMessage> handleManagerException(UserManagerException ex) {
-        ErrorType errorType = ex.getErrorType();
-        HttpStatus httpStatus = errorType.httpStatus;
-        return new ResponseEntity<>(createError(errorType, ex), httpStatus);
+    public ResponseEntity<ErrorMessage> handleManagerException(UserManagerException ex){
+        ErrorType errorType=ex.getErrorType();
+        HttpStatus httpStatus=errorType.httpStatus;
+        return new ResponseEntity<>(createError(errorType,ex),httpStatus);
     }
 
     private ErrorMessage createError(ErrorType errorType, Exception ex) {
-        System.out.println("Hata olustu: " + ex.getMessage());
+        System.out.println("Hata olustu: "+ex.getMessage());
         return ErrorMessage.builder()
                 .code(errorType.getCode())
                 .message(errorType.getMessage())
@@ -39,13 +39,13 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public final ResponseEntity<ErrorMessage> handleMethodArgumentNotValidException(MethodArgumentNotValidException exception) {
-        ErrorType errorType = ErrorType.BAD_REQUEST;
-        List<String> fields = new ArrayList<>();
-        exception.getBindingResult().getFieldErrors().forEach(e -> fields.add(e.getField() + ": " + e.getDefaultMessage()));
-        ErrorMessage errorMessage = createError(errorType, exception);
+    public final ResponseEntity<ErrorMessage> handleMethodArgumentNotValidException(MethodArgumentNotValidException exception){
+        ErrorType errorType=ErrorType.BAD_REQUEST;
+        List<String> fields=new ArrayList<>();
+        exception.getBindingResult().getFieldErrors().forEach(e->fields.add(e.getField()+": "+e.getDefaultMessage()));
+        ErrorMessage errorMessage=createError(errorType,exception);
         errorMessage.setFields(fields);
-        return new ResponseEntity<>(errorMessage, errorType.getHttpStatus());
+        return new ResponseEntity<>(errorMessage,errorType.getHttpStatus());
     }
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
@@ -74,15 +74,13 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(MissingPathVariableException.class)
     public final ResponseEntity<ErrorMessage> handleMethodArgumentMisMatchException(
             MissingPathVariableException exception) {
-
         ErrorType errorType = ErrorType.BAD_REQUEST;
         return new ResponseEntity<>(createError(errorType, exception), errorType.getHttpStatus());
     }
-
     @ExceptionHandler(DataIntegrityViolationException.class)
-    public final ResponseEntity<ErrorMessage> handlePsqlException(DataIntegrityViolationException exception) {
-        ErrorType errorType = ErrorType.USERNAME_DUPLICATE;
-        return new ResponseEntity<>(createError(errorType, exception), errorType.getHttpStatus());
+    public final ResponseEntity<ErrorMessage> handlePsqlException(DataIntegrityViolationException exception){
+        ErrorType errorType=ErrorType.USERNAME_DUPLICATE;
+        return new ResponseEntity<>(createError(errorType,exception),errorType.getHttpStatus());
     }
 
     @ExceptionHandler(Exception.class)

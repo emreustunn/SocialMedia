@@ -1,10 +1,13 @@
 package com.bilgeadam.repository.entity;
 
-import com.bilgeadam.repository.entity.enums.EStatus;
+import com.bilgeadam.repository.enums.EStatus;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @SuperBuilder
@@ -23,5 +26,7 @@ public class UserProfile extends BaseEntity {
     private String about;
     @Builder.Default
     private EStatus status = EStatus.PENDING;
+    private List<String> follows= new ArrayList<>();
+    private List<String> follower= new ArrayList<>();
 
 }

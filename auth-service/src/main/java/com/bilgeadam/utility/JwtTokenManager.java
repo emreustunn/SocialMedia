@@ -6,7 +6,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.bilgeadam.exception.AuthManagerException;
 import com.bilgeadam.exception.ErrorType;
-import com.bilgeadam.repository.entity.enums.ERoles;
+import com.bilgeadam.repository.enums.ERole;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -16,93 +16,97 @@ import java.util.Optional;
 @Service
 public class JwtTokenManager {
     @Value("${jwt.secretkey}")
-    String secretKey; //şifreleme algoritmasına vereceğimiz anahtar.
+    String secretKey;
+
     @Value("${jwt.issuer}")
-    String issuer; // kimin yarattığı
+    String issuer;
+
     @Value("${jwt.audience}")
-    String audience; // hangi kurum yarattı örn bilgeadam
+    String audience;
 
-    public Optional<String> createToken(Long id) {
-        String token = null;
-        Date date = new Date(System.currentTimeMillis() + (1000 * 60 * 5));
+    public Optional<String> createToken(Long id){
+        String token=null;
+        Date date=new Date(System.currentTimeMillis()+(1000*60*5));
         try {
-            token = JWT.create()
+            token= JWT.create()
                     .withAudience(audience)
                     .withIssuer(issuer)
                     .withIssuedAt(new Date())
-                    .withExpiresAt(date) // geçerlilik süresi.
-                    .withClaim("id", id)
+                    .withExpiresAt(date)
+                    .withClaim("id",id)
                     .sign(Algorithm.HMAC512(secretKey));
-            return Optional.of(token);
-
-        } catch (Exception e) {
-            return Optional.empty();
+                return Optional.of(token);
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+                return Optional.empty();
         }
-    }
 
-    public Optional<String> createToken(Long id, ERoles role) {
-        String token = null;
-        Date date = new Date(System.currentTimeMillis() + (1000 * 60 * 5));
+    }
+    public Optional<String> createToken(Long id, ERole role){
+        String token=null;
+        Date date=new Date(System.currentTimeMillis()+(1000*60*5));
         try {
-            token = JWT.create()
+            token= JWT.create()
                     .withAudience(audience)
                     .withIssuer(issuer)
                     .withIssuedAt(new Date())
-                    .withExpiresAt(date) // geçerlilik süresi.
-                    .withClaim("id", id)
-                    .withClaim("role", role.toString())
+                    .withExpiresAt(date)
+                    .withClaim("id",id)
+                    .withClaim("role",role.toString())
                     .sign(Algorithm.HMAC512(secretKey));
             return Optional.of(token);
-
-        } catch (Exception e) {
+        }catch (Exception e){
             System.out.println(e.getMessage());
             return Optional.empty();
         }
+
     }
 
-    public Boolean validateToken(String token) {
-        try {
-            Algorithm algorithm = Algorithm.HMAC512(secretKey);
-            JWTVerifier verifier = JWT.require(algorithm).withIssuer(issuer).withAudience(audience).build();
-            DecodedJWT decodedJWT = verifier.verify(token);
-            if (decodedJWT == null) {
-                return false;
-            }
-        } catch (Exception e) {
-            throw new AuthManagerException(ErrorType.INVALID_TOKEN);
+        public Boolean validateToken(String token){
+                try {
+                    Algorithm algorithm=Algorithm.HMAC512(secretKey);
+                    JWTVerifier verifier=JWT.require(algorithm).withIssuer(issuer).withAudience(audience).build();
+                    DecodedJWT decodedJWT=verifier.verify(token);
+
+                    if (decodedJWT==null){
+                        return false;
+                    }
+                }catch (Exception e){
+                    System.out.println(e.getMessage());
+                   throw new AuthManagerException(ErrorType.INVALID_TOKEN);
+                }
+                return true;
         }
-        return true;
-    }
 
-    public Optional<Long> getIdFromToken(String token) {
-        try {
-            Algorithm algorithm = Algorithm.HMAC512(secretKey);
-            JWTVerifier verifier = JWT.require(algorithm).withIssuer(issuer).withAudience(audience).build();
-            DecodedJWT decodedJWT = verifier.verify(token);
-
-            if (decodedJWT == null) {
+        public Optional<Long> getIdFromToken(String token){
+            try {
+                Algorithm algorithm=Algorithm.HMAC512(secretKey);
+                JWTVerifier verifier=JWT.require(algorithm).withIssuer(issuer).withAudience(audience).build();
+                DecodedJWT decodedJWT=verifier.verify(token);
+                if (decodedJWT==null){
+                    throw new AuthManagerException(ErrorType.INVALID_TOKEN);
+                }
+                Long id=decodedJWT.getClaim("id").asLong();
+                return Optional.of(id);
+            }catch (Exception e){
+                System.out.println(e.getMessage());
                 throw new AuthManagerException(ErrorType.INVALID_TOKEN);
             }
-            Long id = decodedJWT.getClaim("id").asLong();
-            return Optional.of(id);
-        } catch (Exception e) {
-            throw new AuthManagerException(ErrorType.INVALID_TOKEN);
         }
-    }
-
-    public Optional<String> getRoleFromToken(String token) {
+    public Optional<String> getRoleFromToken(String token){
         try {
-            Algorithm algorithm = Algorithm.HMAC512(secretKey);
-            JWTVerifier verifier = JWT.require(algorithm).withIssuer(issuer).withAudience(audience).build();
-            DecodedJWT decodedJWT = verifier.verify(token);
-
-            if (decodedJWT == null) {
+            Algorithm algorithm=Algorithm.HMAC512(secretKey);
+            JWTVerifier verifier=JWT.require(algorithm).withIssuer(issuer).withAudience(audience).build();
+            DecodedJWT decodedJWT=verifier.verify(token);
+            if (decodedJWT==null){
                 throw new AuthManagerException(ErrorType.INVALID_TOKEN);
             }
-            String role = decodedJWT.getClaim("role").asString();
+            String role=decodedJWT.getClaim("role").asString();
             return Optional.of(role);
-        } catch (Exception e) {
+        }catch (Exception e){
+            System.out.println(e.getMessage());
             throw new AuthManagerException(ErrorType.INVALID_TOKEN);
         }
     }
+
 }

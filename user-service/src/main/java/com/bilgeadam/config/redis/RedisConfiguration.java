@@ -1,5 +1,6 @@
 package com.bilgeadam.config.redis;
 
+
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,8 +13,11 @@ import org.springframework.data.redis.repository.configuration.EnableRedisReposi
 @EnableRedisRepositories
 public class RedisConfiguration {
 
+
+
     @Bean
     public LettuceConnectionFactory redisConnectionFactory(){
         return new LettuceConnectionFactory(new RedisStandaloneConfiguration("localhost",6379));
     }
+
 }

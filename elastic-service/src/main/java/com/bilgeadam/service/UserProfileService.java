@@ -10,17 +10,17 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class UserProfileService extends ServiceManager<UserProfile, String> {
-    private final IUserProfileRepository iUserProfileRepository;
+    private final IUserProfileRepository userProfileRepository;
 
-    public UserProfileService(IUserProfileRepository iUserProfileRepository) {
-        super(iUserProfileRepository);
-        this.iUserProfileRepository = iUserProfileRepository;
+
+    public UserProfileService(IUserProfileRepository userProfileRepository) {
+        super(userProfileRepository);
+        this.userProfileRepository = userProfileRepository;
 
     }
 
 
     public UserProfile createUserWithRabbitMq(RegisterElasticModel model) {
-
-        return save(IElasticMapper.INSTANCE.toUserProfile(model));
+        return  save(IElasticMapper.INSTANCE.toUserProfile(model));
     }
 }

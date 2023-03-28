@@ -8,10 +8,11 @@ import lombok.NoArgsConstructor;
 import java.io.Serializable;
 
 @Data
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class RegisterElasticModel implements Serializable {
+
     private String id;
     private Long authId;
     private String username;

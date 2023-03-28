@@ -8,10 +8,11 @@ import lombok.NoArgsConstructor;
 import java.io.Serializable;
 
 @Data
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class RegisterModel implements Serializable {
+
     private Long authId;
     private String username;
     private String email;

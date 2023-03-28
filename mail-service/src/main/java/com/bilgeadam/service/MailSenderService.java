@@ -24,9 +24,5 @@ public class MailSenderService {
         mailMessage.setSubject("AKTIVASYON KODU");
         mailMessage.setText(model.getUsername()+" adıyla başarılı bir şekilde kayıt oldunuz.\n"+"Aktivasyon kodunuz ...:"+model.getActivationCode());
         javaMailSender.send(mailMessage);
-        Scanner sc = new Scanner(System.in);
-
-        int sayi = sc.nextInt();
-        String sayi1 = String.valueOf(sayi);
     }
 }

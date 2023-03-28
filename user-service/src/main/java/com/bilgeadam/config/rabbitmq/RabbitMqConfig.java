@@ -1,6 +1,5 @@
 package com.bilgeadam.config.rabbitmq;
 
-import com.rabbitmq.client.AMQP;
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.DirectExchange;
@@ -11,6 +10,8 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class RabbitMqConfig {
+    // auth-microservisde olusturdugumuz kuyruğu user microservisde de
+    // confıguration ayarları ile beraber olusturyoruz
     @Value("${rabbitmq.queueRegister}")
     private String queueNameRegister;
     @Value("${rabbitmq.queueregisterelastic}")
@@ -19,6 +20,8 @@ public class RabbitMqConfig {
     private String elasticRegisterBindingKey;
     @Value("${rabbitmq.exchange-user}")
     private String exchange;
+
+
 
     @Bean
     Queue registerQueue(){
@@ -29,16 +32,15 @@ public class RabbitMqConfig {
     Queue registerQueueElastic(){
         return new Queue(elasticRegisterQueue);
     }
-
     @Bean
-    DirectExchange exchangeUser(){
+    DirectExchange excahangeUser(){
+
         return new DirectExchange(exchange);
     }
 
     @Bean
-    Binding bindingRegisterElastic(final Queue registerQueueElastic,DirectExchange exchangeUser){
-        return BindingBuilder.bind(registerQueueElastic).to(exchangeUser).with(elasticRegisterBindingKey);
+    public Binding bindingRegisterElastic(final Queue registerQueueElastic, final DirectExchange excahangeUser){
+
+        return BindingBuilder.bind(registerQueueElastic).to(excahangeUser).with(elasticRegisterBindingKey);
     }
-
-
 }

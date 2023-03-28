@@ -13,9 +13,13 @@ import org.mapstruct.factory.Mappers;
 
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE,componentModel = "spring")
 public interface IAuthMapper {
-    IAuthMapper INSTANCE = Mappers.getMapper(IAuthMapper.class);
+    IAuthMapper INSTANCE= Mappers.getMapper(IAuthMapper.class);
+
+
     Auth toAuth(final RegisterRequestDto dto);
+
     RegisterResponseDto toRegisterResponseDto(final Auth auth);
+
     @Mapping(source = "id",target = "authId")
     NewCreateUserRequestDto toNewCreateUserRequestDto(final Auth auth);
     @Mapping(source = "id",target = "authId")

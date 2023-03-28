@@ -1,12 +1,12 @@
 package com.bilgeadam.controller;
 
-import com.bilgeadam.dto.request.ActivitaionRequestDto;
+import com.bilgeadam.dto.request.ActivateRequestDto;
 import com.bilgeadam.dto.request.LoginRequestDto;
 import com.bilgeadam.dto.request.RegisterRequestDto;
 import com.bilgeadam.dto.request.UpdateEmailOrUsernameRequestDto;
 import com.bilgeadam.dto.response.RegisterResponseDto;
 import com.bilgeadam.repository.entity.Auth;
-import com.bilgeadam.repository.entity.enums.ERoles;
+import com.bilgeadam.repository.enums.ERole;
 import com.bilgeadam.service.AuthService;
 import com.bilgeadam.utility.JwtTokenManager;
 import lombok.RequiredArgsConstructor;
@@ -27,68 +27,75 @@ import static com.bilgeadam.constants.ApiUrls.*;
 @RequestMapping(AUTH)
 public class AuthController {
     private final AuthService authService;
-    private final JwtTokenManager jwtTokenManager;
+
+    private final JwtTokenManager tokenManager;
     private final CacheManager cacheManager;
 
     @PostMapping(REGISTER)
-    public ResponseEntity<RegisterResponseDto> register(@RequestBody @Valid RegisterRequestDto dto) {
+    public ResponseEntity<RegisterResponseDto> register(@RequestBody @Valid RegisterRequestDto dto){
         return ResponseEntity.ok(authService.register(dto));
     }
-
     @PostMapping(REGISTER+"2")
-    public ResponseEntity<RegisterResponseDto> registerWithRabbitMq(@RequestBody @Valid RegisterRequestDto dto) {
+    public ResponseEntity<RegisterResponseDto> registerWithRabbitMq(@RequestBody @Valid RegisterRequestDto dto){
         return ResponseEntity.ok(authService.registerWithRabbitMq(dto));
     }
-
     @PostMapping(LOGIN)
-    public ResponseEntity<String> login(@RequestBody LoginRequestDto dto) {
-        return ResponseEntity.ok(authService.login(dto));
+    public ResponseEntity<String> login(@RequestBody LoginRequestDto dto){
+        return  ResponseEntity.ok(authService.login(dto));
     }
 
-    @PutMapping(ACTIVESTATUS)
-    public ResponseEntity<Boolean> activationCheck(ActivitaionRequestDto dto) {
-        return ResponseEntity.ok(authService.activationCheck(dto));
+    @PostMapping(ACTIVATESTATUS)
+    public ResponseEntity<Boolean> activateStatus(@RequestBody ActivateRequestDto dto){
+        return ResponseEntity.ok(authService.activateStatus(dto));
     }
+
     @PreAuthorize("hasAuthority('USER')")
     @GetMapping(FINDALL)
-    public ResponseEntity<List<Auth>> findAll() {
+    public ResponseEntity<List<Auth>> findAll(){
         return ResponseEntity.ok(authService.findAll());
     }
 
     @GetMapping("/createtoken")
-    public ResponseEntity<String> createToken(Long id, ERoles role) {
-        return ResponseEntity.ok(jwtTokenManager.createToken(id, role).get());
+    public  ResponseEntity<String> createToken(Long id, ERole role){
+        return ResponseEntity.ok(tokenManager.createToken(id,role).get());
     }
 
     @GetMapping("/createtoken2")
-    public ResponseEntity<String> createToken(Long id) {
-        return ResponseEntity.ok(jwtTokenManager.createToken(id).get());
+    public  ResponseEntity<String> createToken(Long id){
+        return ResponseEntity.ok(tokenManager.createToken(id).get());
     }
 
     @GetMapping("/getidfromtoken")
-    public ResponseEntity<Long> getIdFromToken(String token) {
-        return ResponseEntity.ok(jwtTokenManager.getIdFromToken(token).get());
+    public  ResponseEntity<Long> getIdFromToken(String token){
+        return ResponseEntity.ok(tokenManager.getIdFromToken(token).get());
     }
+
     @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/getrolefromtoken")
-    public ResponseEntity<String> getRoleFromToken(String token) {
-        return ResponseEntity.ok(jwtTokenManager.getRoleFromToken(token).get());
+    public  ResponseEntity<String> getRoleFromToken(String token){
+        return ResponseEntity.ok(tokenManager.getRoleFromToken(token).get());
     }
 
     @PutMapping("/updateemailorusername")
-    public ResponseEntity<Boolean> updateEmailOrUsername(@RequestBody UpdateEmailOrUsernameRequestDto dto) {
+    public ResponseEntity<Boolean> updateEmailOrUsername(@RequestHeader(value = "Authorization")String token,@RequestBody UpdateEmailOrUsernameRequestDto dto){
+
         return ResponseEntity.ok(authService.updateEmailOrUsername(dto));
     }
 
-    //delete işleminde verimizi silmiyoruz sadece statusu değiştiriyoruz.
     @DeleteMapping(DELETEBYID)
-    public ResponseEntity<Boolean> delete(@RequestParam Long id) {
+    public ResponseEntity<Boolean> delete(Long id){
+
         return ResponseEntity.ok(authService.delete(id));
+    }
+
+    @PutMapping(DELETEBYID+2)
+    public ResponseEntity<Boolean> delete2(String token){
+        return ResponseEntity.ok(authService.delete2(token));
     }
 
     @GetMapping("/redis")
     @Cacheable(value = "redisexample")
-    public String redisExample(String value) {
+    public  String redisExample(String value){
         try {
             Thread.sleep(2000);
             return value;
@@ -97,28 +104,28 @@ public class AuthController {
         }
     }
 
-    //1. silme işlemi
     @GetMapping("/redisdelete")
-    @CacheEvict(cacheNames = "redisexample", allEntries = true)
-    public void redisDelete() {
+    @CacheEvict(cacheNames = "redisexample",allEntries = true)
+    public void redisDelete(){
     }
 
-    //2. silme işlemi
     @GetMapping("/redisdelete2")
-    public boolean redisDelete2() {
+    public Boolean redisDelete2(){
+
         try {
-//            cacheManager.getCache("redisexample").clear(); // aynı isimle cachelenmiş bütün verileri siler.
-            cacheManager.getCache("redisexample").evict("emre"); // redisexampledaki emre değerlerini sil.
-            return true;
-        } catch (Exception e) {
+            //  cacheManager.getCache("redisexample").clear() ; //aynı isimle cache lenmis butun verileri siler
+            cacheManager.getCache("redisexample").evict("emre");
+            return  true;
+        }catch (Exception e){
             System.out.println(e.getMessage());
-            return false;
+            return  false;
         }
     }
 
-    @GetMapping("/findbyrole")
-    public List<Long> findByRole(@RequestParam String role) {
-        return authService.findByRole(role);
+    @GetMapping(FINDBYROLE)
+    public ResponseEntity<List<Long>> findByRole(@RequestHeader(value = "Authorization")String token, @RequestParam String role){
+
+        return ResponseEntity.ok(authService.findByRole(role));
     }
 
 }

@@ -6,10 +6,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ActivitaionRequestDto {
+@Builder
+public class ActivateRequestDto {
+
     private Long id;
     private String activationCode;
 }

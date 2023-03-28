@@ -32,28 +32,26 @@ public class JwtTokenFilter extends OncePerRequestFilter {
         if (authHeader!=null&&authHeader.startsWith("Bearer ")){
 
             String token=authHeader.substring(7);
-            System.out.println(token);
 
             Optional<String> userRole=jwtTokenManager.getRoleFromToken(token);
-
             if (userRole.isPresent()){ //jwtTokenManager.validateToken(token)
-                System.out.println(userRole);
-                try {
-                    UserDetails userDetails= jwtUserDetails.loadUserByUserRole(userRole.get());
-                    UsernamePasswordAuthenticationToken authenticationToken=
-                            new UsernamePasswordAuthenticationToken(userDetails,null,userDetails.getAuthorities());
-                    SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
 
+                UserDetails userDetails= jwtUserDetails.loadUserByUserRole(userRole.get());
+                UsernamePasswordAuthenticationToken authenticationToken=
+                        new UsernamePasswordAuthenticationToken(userDetails,null,userDetails.getAuthorities());
+                SecurityContextHolder.getContext().setAuthentication(authenticationToken);
             }else {
                 throw new UserManagerException(ErrorType.INVALID_TOKEN);
             }
 
         }
+        try {
+            filterChain.doFilter(request,response);
+        }catch (Exception e){
+            e.printStackTrace();
+            System.out.println();
+        }
 
-        filterChain.doFilter(request,response);
 
     }
 }

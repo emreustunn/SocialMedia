@@ -1,4 +1,4 @@
-package com.bilgeadam.rabbitmq.procuder;
+package com.bilgeadam.rabbitmq.producer;
 
 import com.bilgeadam.rabbitmq.model.RegisterElasticModel;
 import com.bilgeadam.rabbitmq.model.RegisterModel;
@@ -10,15 +10,17 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class RegisterProducer {
+
     @Value("${rabbitmq.exchange-user}")
     private String directExchange;
     @Value("${rabbitmq.elasticregisterkey}")
     private String registerBindingKey;
 
     private final RabbitTemplate rabbitTemplate;
-    public void sendNewUser(RegisterElasticModel model){
 
+    public void  sendNewUser(RegisterElasticModel model){
         rabbitTemplate.convertAndSend(directExchange,registerBindingKey,model);
     }
+
 
 }

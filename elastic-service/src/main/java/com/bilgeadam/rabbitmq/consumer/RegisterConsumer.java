@@ -10,16 +10,16 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-@Slf4j //console'a log info çıktısı vermek için kullanılan kütüphane.
+@Slf4j// console a log info çıktısı vermek için kullanılan kutuphane
 public class RegisterConsumer {
 
     private final UserProfileService userProfileService;
-
 
     @RabbitListener(queues = ("${rabbitmq.queueregisterelastic}"))
     public void newUserCreate(RegisterElasticModel model){
         log.info("User {}",model.toString());
         userProfileService.createUserWithRabbitMq(model);
+
     }
 
 }

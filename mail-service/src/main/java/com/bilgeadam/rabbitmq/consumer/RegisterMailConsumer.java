@@ -13,10 +13,11 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class RegisterMailConsumer {
 
-    private final MailSenderService service;
-
+    private final MailSenderService mailSenderService;
     @RabbitListener(queues = "${rabbitmq.registermailqueue}")
     public void sendActivationCode(RegisterMailModel model){
-        service.sendMail(model);
+        log.info("Model {}",model.toString());
+        mailSenderService.sendMail(model);
     }
+
 }
