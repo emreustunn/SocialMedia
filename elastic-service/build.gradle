@@ -7,4 +7,5 @@ buildscript {
 dependencies {
     implementation libs.springBootElasticSearch
     implementation libs.springBootRabbitMQ
+    implementation libs.springCloudConfigClient
 }

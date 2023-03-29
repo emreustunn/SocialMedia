@@ -21,7 +21,7 @@ public class UserServiceSecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception{
         httpSecurity.csrf().disable();
     try {
-        httpSecurity.authorizeRequests().antMatchers("/swagger-ui/**","/v3/api-docs/**")
+        httpSecurity.authorizeRequests().antMatchers("/swagger-ui/**","/v3/api-docs/**","/api/v1/follow/findall")
                 .permitAll().anyRequest().authenticated();
 
         httpSecurity.addFilterBefore(getJwtTokenFilter(),UsernamePasswordAuthenticationFilter.class);

@@ -10,6 +10,7 @@
         </processorPath>
         <module name="Java6SocialMedia.main" />
         <module name="Java6SocialMedia.api-gateway-service.main" />
+        <module name="Java6SocialMedia.post-service.main" />
         <module name="Java6SocialMedia.config-server-git.main" />
         <module name="Java6SocialMedia.mail-service.main" />
         <module name="Java6SocialMedia.config-server.main" />
